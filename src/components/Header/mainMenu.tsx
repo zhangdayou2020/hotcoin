@@ -1,3 +1,4 @@
+import { DownOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link } from 'umi';
 import styles from './index.less';
@@ -7,8 +8,13 @@ const MainMenu = ({ menuData }) => {
   const subMenus = {
     trade: [
       // "买币" 对应的二级菜单 (示例数据)
-      { key: 'spot', name: '币币交易', path: '/trade/spot' },
-      { key: 'otc', name: '法币交易', path: '/trade/otc' },
+      {
+        key: 'spot',
+        name: '充值',
+        path: '/trade/spot',
+      },
+      { key: 'otc', name: 'C2C买币', path: '/trade/otc' },
+      { key: 'otc', name: '信用卡买币', path: '/trade/otc' },
     ],
     market: [
       // "行情" 对应的二级菜单 (示例数据)
@@ -112,30 +118,66 @@ const MainMenu = ({ menuData }) => {
       },
     ],
   };
+
   const menuItems = menuData.map((item) => {
-    const subMenuData = subMenus[item.key];
-    if (subMenuData && subMenuData.length > 0) {
+    console.log(item.key, 'item.key'); // 调试输出
+    const subMenuData = subMenus[item.key] || [];
+    console.log(subMenuData, 'subMenuData'); // 调试输出
+
+    if (subMenuData.length > 0) {
       const subMenuItems = subMenuData.map((subItem) => ({
         key: subItem.key,
-        label: subItem.label,
+        label: (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <div style={{ marginRight: '8px' }}>
+              <TwitterOutlined />
+            </div>
+            <div>
+              <div style={{ fontWeight: 'bold' }}>{subItem.name}</div>
+              <div style={{ fontSize: '12px', color: '#888' }}>
+                {subItem.description || '暂无描述'}
+              </div>
+            </div>
+          </div>
+        ),
       }));
+
       return {
         key: item.key,
         label: (
-          <a href="#" onClick={(e) => e.preventDefault()} className={styles.primaryMenuItem}>
+          <a
+            href="#"
+            onClick={(e) => e.preventDefault()}
+            className={styles.primaryMenuItem}
+          >
             {item.name}
+            <DownOutlined className={styles.dropdownIcon} />
           </a>
         ),
-        children: subMenuItems,
+        children: subMenuItems, // 确保子菜单项正确传递
       };
     } else {
       return {
         key: item.key,
-        label: <Link to={item.path}>{item.name}</Link>,
+        label: (
+          <Link to={item.path} className={styles.primaryMenuItem}>
+            {item.name}
+          </Link>
+        ),
       };
     }
   });
-  return <Menu mode="horizontal" items={menuItems} />;
+
+  console.log(menuItems, 'Generated menu items'); // 调试输出
+
+  return (
+    <Menu mode="horizontal" items={menuItems} className={styles.customMenu} />
+  );
 };
 
 export default MainMenu;

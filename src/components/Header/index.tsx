@@ -1,6 +1,7 @@
 import { Layout } from 'antd';
 // import Logo from './Logo';
 import MainMenu from './mainMenu';
+import Login from './login'
 // import UserActions from './UserActions';
 // // import SearchInput from './SearchInput';
 // // import NotificationCenter from './NotificationCenter';
@@ -46,6 +47,7 @@ const Header = () => {
       </div>
       <div className={styles.right}>
         {/* <SearchInput onSearch={handleSearch} /> */}
+        <Login/>
         {/* <NotificationCenter notifications={notifications} /> */}
         {/* <UserActions userInfo={userInfo} onLogin={handleLogin} onLogout={handleLogout} /> */}
       </div>
